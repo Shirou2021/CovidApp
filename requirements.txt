@@ -1,0 +1,15 @@
+This file aim to provide a quick rundown on the tools that are
+needed to complete the project.
+
+A text editor of user's preference.
+
+Packages                   Version
+========                   =========
+beautiful soup             ......
+matplotlib                 3.6.2
+numpy 					   1.24.1
+pandas					   1.5.2
+plotly 					   ......
+streamlit                  ......
+
+Note: The version of python packages might vary. 
