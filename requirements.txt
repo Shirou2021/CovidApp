@@ -5,11 +5,12 @@ A text editor of user's preference.
 
 Packages                   Version
 ========                   =========
-beautiful soup             ......
+beautiful soup             4.11.1
 matplotlib                 3.6.2
 numpy 					   1.24.1
 pandas					   1.5.2
 plotly 					   ......
+requests				   2.28.1
 streamlit                  ......
 
 Note: The version of python packages might vary. 
