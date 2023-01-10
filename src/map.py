@@ -3,17 +3,18 @@ import requests
 import csv
 import pandas as pd
 from bs4 import BeautifulSoup
-
+import streamlit as strl
 # start this porject with data scraping from the web, then start design the layout 
 # of a dashboard with css or other language. - 1/1/202
 
 def scraped_data():
 	# An actual website link that will be used to scrape and analyze.
 	# A quick note: the website link below is open-source and free. 
-	url = "https://www.worldometers.info/coronavirus/"
+	url = "https://www.worldometers.info/coronavirus"
 
 	# Send a request to the website.
 	permission = requests.get(url)
+
 
 	# A quick check for the requested data.
 	code = requests.status_codes
@@ -21,9 +22,11 @@ def scraped_data():
 		print ("Error.")
 	
 	# start parsing
-	fileContent = BeautifulSoup(permission.text, "html.parser") # It actually prints entire html info. 
-	dataTable = fileContent.find("table", id = "main_table_countries_today").find("tbody")
-	rows = dataTable.find_all("tr", style = "")
+	fileContent = BeautifulSoup(permission.content, features ='html.parser') # It actually prints entire html info. 
+	fileContent.prettify()
+	dataTable = fileContent.find('table', attrs={'id': 'main_table_countries_today'}).find("tbody")
+	#dataTable = fileContent.find("table", id = "main_table_countries_today").find("tbody")
+	rows = dataTable.find_all("tr", attrs={"style": ""})
 
 	# A quick for loop that iterate through each row 
 	world_data = []
@@ -38,32 +41,61 @@ def scraped_data():
 		del countries[11]
 		del countries[13]
 		world_data.append(countries)
-
+			
+	   
 	del world_data[0]
-	#print (world_data[0:10])
+	# #print (world_data)
 
-	#Write the scraped data to a csv file. (Try to fix this tomorrow)
-	# try: 
-	# 	os.mkdir("./tmp")
-	# except OSError as error:
-	# 	print("It already created")
-	# str_names = ["Country", "Total Cases", "New Cases", "Total Deaths",
-	# 			"Total Recovered", "Active Cases", "Total Tests", "Population"]
-	# newFile = "./tmp/covid19-stats.csv"
-	# print (newFile)
+	#Write the scraped data to a csv file. 
+	try: 
+		os.mkdir("./tt")
+	except OSError as error:
+		print("It already created")
+	str_names = ["Country", "Total Cases", "New Cases", "Total Deaths",
+	 			"Total Recovered", "Active Cases", "Total Tests", "Population"]
+	newFile = "./tt/covid19-stats.csv"
+	print (newFile)
 
-	# with open(newFile, "w", newline = "") as f:
-	# 	writer = csv.writer(f)
-	# 	writer.writerow(str_names)
-	# 	for cy in world_data:
-	# 		writer.writerow(cy)
+	with open(newFile, "w", newline = "") as f:
+		writer = csv.writer(f)
+		writer.writerow(str_names)
+		for cy in world_data:
+			writer.writerow(cy)
+	# dt = pd.DataFrame(world_data[1:], columns=world_data[0][:12])
+	# #df.to_csv('coronavirus.csv')
+	
+	# # dt = pd.DataFrame(world_data[1:], columns=world_data[0][:12]) #Formatting the header
+	# df = dd.from_pandas(dt,npartitions=1)
+	# print(df.head())
 
-	data = pd.read_csv('covid19-stats.csv')
-	print (data.head(10))
+	#data = pd.read_csv('./tt/covid19-stats.csv')
+	# print (data.head(10))
+	#print (data ["Country"] == "Spain") 
+
+	#live_data.iloc[:, :].to_csv("covid.csv")
 
 
-def board():
+def read():
+	data = pd.read_csv('./tt/covid19-stats.csv')
+	return data
 
-# Call the functions.
-scraped_data()
-board()
+data = read()
+def base_format():
+	# data = pd.read_csv('./tt/covid19-stats.csv')
+	# # #print (data.head(10))
+	# print (data['Country'] == 'Spain')
+	strl.title('World Wide Covid19 stats!')
+	strl.sidebar.title("Pick a choice")
+	visuals = strl.sidebar.selectbox('Choose a pick viusal representation', (types of chart.....))
+	country = strl.sidebar.selectbox('Choose a country to visualize' data...)
+	records = strl.sidebar.radio('Virus status', (different status.))
+	strl.markdown('Country-level Analysis')
+
+	return True 
+
+def main():
+	scraped_data()
+	read()
+	board()
+
+main() # Calls the final function to perform all the functionality within this program. 
