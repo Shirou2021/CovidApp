@@ -75,7 +75,7 @@ def scraped_data():
 	#live_data.iloc[:, :].to_csv("covid.csv")
 
 
-def read():
+def read(): # if the data frame can;t read the data properly, then manually change the csv file since the website updates frequently.
 	data = pd.read_csv('./tt/covid19-stats.csv')
 	return data
 
@@ -89,13 +89,50 @@ def base_format():
 	visuals = strl.sidebar.selectbox('Choose a pick viusal representation', (types of chart.....))
 	country = strl.sidebar.selectbox('Choose a country to visualize' data...)
 	records = strl.sidebar.radio('Virus status', (different status.))
+	selected_territory = data[data['country'] == country]
 	strl.markdown('Country-level Analysis')
 
 	return True 
+def data_parsing(data):
+	newFrame = pd.DataFrame({'status'}: [Status variables and use df.loc or df.iloc.])
+	return newFrame
+country_total = data_parsing(selected_territory)
 
-def main():
+if visual == 'Bar Chart':
+	graph = px.bar(country_total, x = 'Status', y = 'number of cases', label = {'number of cases': (country)}, color = 'status')
+	strl.plotly_chart(graph)
+
+if visual == 'Pie Chart':
+	if records == "confirmed cases":
+		strl.title('xxx')
+		fig = px.pie(data, values = data['confirmed cases'], names = data['country'])
+		strl.plotly_chart(fig)
+	elif records == "....":
+		strl.title('xxx')
+		fig = px.pie(data, values = data['...'], names = data['country'])
+		strl.plotly_chart(fig)
+	elif records == "....":
+		strl.title('xxx')
+		fig = px.pie(data, values = data['...'], names = data['country'])
+		strl.plotly_chart(fig)
+	elif records == "....":
+		strl.title('xxx')
+		fig = px.pie(data, values = data['...'], names = data['country'])
+		strl.plotly_chart(fig)
+	else:
+		strl.title('xxx')
+		fig = px.pie(data, values = data['...'], names = data['country'])
+		strl.plotly_chart(fig)
+
+if visual = "Line Chart":
+	if records == "confirmed cases":
+		strl.title('xxx')
+		fig = px.pie(data, values = data['confirmed cases'], names = data['country'])
+		strl.plotly_chart(fig)
+	# Same as above.
+def _main_():
 	scraped_data()
 	read()
 	board()
 
-main() # Calls the final function to perform all the functionality within this program. 
+_main_() # Calls the final function to perform all the functionality within this program. 
