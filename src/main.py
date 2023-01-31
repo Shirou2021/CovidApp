@@ -13,5 +13,34 @@ def design():
 	photo = Image.open("Vex.jpg")
 	photo.show()
 	st.image(photo, use_column_width = True)
+
+	# Fix the markdown css part. Finish this when the project is almost done for visual effect.
 	st.markdown('<style>body{background-color: darkblue;}</style', unsafe_allow_html = True)
 design()
+
+@st.cache
+def read_file():
+	data = pd.read_csv("covid19_info.csv")
+	return data
+
+df = read_file()
+
+def sidebar():
+	options = st.sidebar.selectbox("Options", ('Bar Chart', 'Pie Chart', 'Line Chart', 'HeatMap'))
+	regions = st.sidebar.selectbox("Select a region", df['Countries'].unique())
+	status = st.sidebar.selectbox("Current Status", ('Total cases', 'Death Cases', 'Recovered Cases', 'Active Cases'))
+	visuals = df[df['Countries'] == regions]
+	st.markdown(""" # Global View """)
+
+sidebar()
+
+def data_frame(self):
+	final_df = pd.DataFrame({''})
+
+def chart():
+	#................................................................
+	if something:
+		#bb
+
+if __name__ == '__chart__':
+	chart()
