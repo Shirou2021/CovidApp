@@ -3,8 +3,6 @@ import pandas as pd
 from PIL import Image
 import streamlit as st
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 def design():
 	st.write("""# Covid19 Dashboard 
@@ -25,22 +23,57 @@ def read_file():
 
 df = read_file()
 
-def sidebar():
-	options = st.sidebar.selectbox("Options", ('Bar Chart', 'Pie Chart', 'Line Chart', 'HeatMap'))
-	regions = st.sidebar.selectbox("Select a region", df['Countries'].unique())
-	status = st.sidebar.selectbox("Current Status", ('Total cases', 'Death Cases', 'Recovered Cases', 'Active Cases'))
-	visuals = df[df['Countries'] == regions]
-	st.markdown(""" # Global View """)
 
-sidebar()
+options = st.sidebar.selectbox("Options", ('Bar Chart', 'Pie Chart', 'Line Graph', 'HeatMap'))
+regions = st.sidebar.selectbox("Select a region", df['Countries'].unique())
+status = st.sidebar.selectbox("Current Status", ('Total Cases', 'Total Deaths', 'Total Recovered', 'Active Cases'))
+visuals = df[df['Countries'] == regions]
+st.markdown(""" # Global View """)
 
-def data_frame(self):
-	final_df = pd.DataFrame({''})
 
+def data_frame(df):
+	final_df = pd.DataFrame({
+    'Status':['Total Cases', 'Total Deaths', 'Recovered','Active'],
+    'Number of cases':(df.iloc[0]['Total Cases'],
+    df.iloc[0]['Total Deaths'], 
+    df.iloc[0]['Total Recovered'], df.iloc[0]['Active Cases'])})
+	return final_df
+
+gTotal = data_frame(visuals)
 def chart():
 	#................................................................
-	if something:
-		#bb
+	if options == 'Bar Chart':
+		final_graph = px.bar(gTotal, x = 'Status', y = 'Number of cases',  labels={'Number of cases':'Number of cases in %s' % (regions)},color='Status')
+		st.plotly_chart(final_graph)
+	
+	if options == 'Pie Chart':
+		if status == "Total Cases":
+			output = px.pie(df, values= df["Total Cases"], names = df["Countries"])
+			st.plotly_chart(output)
+		elif status == "Total Deaths":
+			output = px.pie(df, values = df["Total Deaths"], names = df["Countries"])
+			st.plotly_chart(output)
+		elif status == "Total Recovered":
+			output = px.pie(df, values = df["Total Recovered"], names = df["Countries"])
+			st.plotly_chart(output)
+		elif status == "Active Cases":
+			output = px.pie(df, values = df["Actice Cases"], names = df["Countries"])
+			st.plotly_chart(output)
 
-if __name__ == '__chart__':
-	chart()
+	if options == "Line Graph":
+		if status == "Total Cases":
+			output2 = px.line (df, x = 'Countries', y = df["Total Cases"])
+			st.plotly_chart(output2)
+		elif status == "Active Cases":
+			output2 = px.line (df, x = 'Countries', y = df["Active Cases"])
+			st.plotly_chart(output2)
+		elif status == "Total Deaths":
+			output2 = px.line (df, x = 'Countries', y = df["Total Deaths"])
+			st.plotly_chart(output2)
+		elif status == "Total Recovered":
+			output2 = px.line (df, x = 'Countries', y = df["Total Recovered"])
+			st.plotly_chart(output2)
+
+		# if options == "HeatMap":
+			
+chart()
