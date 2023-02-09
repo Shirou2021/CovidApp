@@ -4,17 +4,34 @@ from PIL import Image
 import streamlit as st
 import plotly.express as px
 
+st.set_page_config(page_title = "Covid19 Visualizations")
 def design():
 	st.write("""# Covid19 Dashboard 
 		This dashboard aims to provide a quick overview of covid19 status. """)
 	st.sidebar.title("Home Menu")
-	photo = Image.open("Vex.jpg")
+	photo = Image.open("covid19.jpeg") # source: https://www.complianceweek.com/risk-management/coronavirus-tips-for-risk-management/28533.article
 	photo.show()
 	st.image(photo, use_column_width = True)
 
-	# Fix the markdown css part. Finish this when the project is almost done for visual effect.
-	st.markdown('<style>body{background-color: darkblue;}</style', unsafe_allow_html = True)
+	st.markdown('<style>body{background-color: #080808}</style>', unsafe_allow_html = True)
+
 design()
+
+# Adds background image. The result might varies based on the version of streamlit package. 
+def set_background_img():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background: url("https://images7.alphacoders.com/900/900403.jpg");
+             background-size: cover;
+			 background-position: center
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+set_background_img()
 
 @st.cache
 def read_file():
@@ -24,7 +41,7 @@ def read_file():
 df = read_file()
 
 
-options = st.sidebar.selectbox("Options", ('Bar Chart', 'Pie Chart', 'Line Graph', 'HeatMap'))
+options = st.sidebar.selectbox("Options", ('None', 'Bar Chart', 'Pie Chart', 'Line Graph', 'HeatMap'))
 regions = st.sidebar.selectbox("Select a region", df['Countries'].unique())
 status = st.sidebar.selectbox("Current Status", ('Total Cases', 'Total Deaths', 'Total Recovered', 'Active Cases'))
 visuals = df[df['Countries'] == regions]
@@ -42,10 +59,16 @@ def data_frame(df):
 gTotal = data_frame(visuals)
 def chart():
 	#................................................................
+
+	# If user chooses "none", then no graph(s) will pop out. 
+	if options == "None":
+		return
+
+	# Bar chart of a particular country if selected
 	if options == 'Bar Chart':
 		final_graph = px.bar(gTotal, x = 'Status', y = 'Number of cases',  labels={'Number of cases':'Number of cases in %s' % (regions)},color='Status')
 		st.plotly_chart(final_graph)
-	
+	# Pie cjart for country-level visualization
 	if options == 'Pie Chart':
 		if status == "Total Cases":
 			output = px.pie(df, values= df["Total Cases"], names = df["Countries"])
@@ -59,7 +82,7 @@ def chart():
 		elif status == "Active Cases":
 			output = px.pie(df, values = df["Actice Cases"], names = df["Countries"])
 			st.plotly_chart(output)
-
+	# Same as pie chart. 
 	if options == "Line Graph":
 		if status == "Total Cases":
 			output2 = px.line (df, x = 'Countries', y = df["Total Cases"])
@@ -74,6 +97,9 @@ def chart():
 			output2 = px.line (df, x = 'Countries', y = df["Total Recovered"])
 			st.plotly_chart(output2)
 
-		# if options == "HeatMap":
+	if options == "HeatMap":
+		heatmap = df.corr()
+		output3 = px.imshow(heatmap)
+		output3.show()
 			
 chart()
