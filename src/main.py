@@ -25,7 +25,9 @@ def set_background_img():
          .stApp {{
              background: url("https://images7.alphacoders.com/900/900403.jpg");
              background-size: cover;
-			 background-position: center
+			 background-position: center;
+			 font: "serif"
+
          }}
          </style>
          """,
@@ -41,7 +43,7 @@ def read_file():
 df = read_file()
 
 
-options = st.sidebar.selectbox("Options", ('None', 'Bar Chart', 'Pie Chart', 'Line Graph', 'HeatMap'))
+options = st.sidebar.selectbox("Options", ('None', 'Bar Chart', 'Pie Chart', 'Line Graph', 'Scatter plot'))
 regions = st.sidebar.selectbox("Select a region", df['Countries'].unique())
 status = st.sidebar.selectbox("Current Status", ('Total Cases', 'Total Deaths', 'Total Recovered', 'Active Cases'))
 visuals = df[df['Countries'] == regions]
@@ -57,18 +59,21 @@ def data_frame(df):
 	return final_df
 
 gTotal = data_frame(visuals)
-def chart():
+def main():
 	#................................................................
 
-	# If user chooses "none", then no graph(s) will pop out. 
+	# If user chooses "none" for options of chart or region is not selected, then no graph(s) will pop out. 
 	if options == "None":
+		return
+	elif regions == "None":
 		return
 
 	# Bar chart of a particular country if selected
 	if options == 'Bar Chart':
 		final_graph = px.bar(gTotal, x = 'Status', y = 'Number of cases',  labels={'Number of cases':'Number of cases in %s' % (regions)},color='Status')
 		st.plotly_chart(final_graph)
-	# Pie cjart for country-level visualization
+
+	# Pie chart for country-level visualization
 	if options == 'Pie Chart':
 		if status == "Total Cases":
 			output = px.pie(df, values= df["Total Cases"], names = df["Countries"])
@@ -97,9 +102,21 @@ def chart():
 			output2 = px.line (df, x = 'Countries', y = df["Total Recovered"])
 			st.plotly_chart(output2)
 
-	if options == "HeatMap":
-		heatmap = df.corr()
-		output3 = px.imshow(heatmap)
-		output3.show()
-			
-chart()
+	# global visualization based on status.
+	if options == "Scatter plot":
+		#output3 = px.scatter (df, x = "Countries", y = "Status", color = "Status2")
+		if status == "Total Cases":
+			output3 = px.scatter (df, x = df['Countries'], y = df["Total Cases"])
+			st.plotly_chart(output3)
+		elif status == "Active Cases":
+			output3 = px.scatter (df, x = df['Countries'], y = df["Active Cases"])
+			st.plotly_chart(output3)
+		elif status == "Total Deaths":
+			output3 = px.scatter (df, x = df['Countries'], y = df["Total Deaths"])
+			st.plotly_chart(output3)
+		elif status == "Total Recovered":
+			output3 = px.scatter (df, x = df['Countries'], y = df["Total Recovered"])
+			st.plotly_chart(output3)
+
+if __name__ == "__main__":
+	main()
