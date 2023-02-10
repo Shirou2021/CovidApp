@@ -7,11 +7,11 @@ Packages                   Version
 ========                   =========
 beautiful soup             4.11.1
 matplotlib                 3.6.2
-numpy 					   1.24.1
-pandas					   1.5.2
+numpy 					           1.24.1
+pandas					           1.5.2
 pillows                    9.3.0
-plotly 					   5.12.0
-requests				   2.28.1
+plotly 					           5.12.0
+requests				           2.28.1
 streamlit                  1.17.0
 
 Note: The version of python packages might vary. 
