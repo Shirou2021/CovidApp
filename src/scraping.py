@@ -52,5 +52,34 @@ def data_scraping():
 		for cy in world_data:
 			writer.writerow(cy)
 
+	# A quick data cleaning that removes unnecessary contents and convert the data
+	# type into integers.
+	with open("./data/covid19-stats.csv", "r") as f:
+		reader = csv.reader(f)
+		data = list(reader)
+
+	# Get the header row
+	rows = data[0]
+
+	# Get the rest of the rows
+	rest = data[1:]
+
+	# Remove any rows that don't have data
+	rest = [r for r in rest if r]
+
+	# Loop through each row and clean the data
+	cleaned_rows = []
+	for r in rest:
+		cleaned_row = []
+		for cell in r:
+			# Remove commas from the numbers
+			cell = cell.replace(",", "")
+			# Try to convert the cell to a number
+			try:
+				cell = int(cell)
+			except ValueError:
+				pass
+			cleaned_row.append(cell)
+		cleaned_rows.append(cleaned_row)
 
 data_scraping()

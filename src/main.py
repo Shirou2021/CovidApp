@@ -37,7 +37,7 @@ set_background_img()
 
 @st.cache
 def read_file():
-	data = pd.read_csv("covid19_info.csv")
+	data = pd.read_csv("./data/covid19_info.csv")
 	return data
 
 df = read_file()
