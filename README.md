@@ -4,7 +4,7 @@ the assistance from streamlit package that's available in python.
 
 Note: There are two different csv files in the folder. One csv file is created from 
 web scraping , other was made from scratch. The format of web scraped version 
-will looks disorganized, because the website that is scraped uses dynamic structure.
+looks disorganized, because the website that is scraped uses dynamic table structure.
 If interested, other data files that are available online can also be used in this 
 project. Few websites I highly recommened are: 
 1. https:github.com/CSSEGISandData/Covid-19 provided by John Hopkin University.
